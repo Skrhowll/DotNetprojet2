@@ -12,7 +12,10 @@ namespace P2FixAnAppDotNetCode.Models
         [BindNever]
         public ICollection<CartLine> Lines { get; set; }
 
-        [Required(ErrorMessage = "ErrorMissingName")]
+        [Required(
+            ErrorMessageResourceType = typeof(P2FixAnAppDotNetCode.Resources.Models.ViewModels.Order),
+            ErrorMessageResourceName = "ErrorMissingName"
+        )]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "ErrorMissingAddress")]
@@ -30,3 +33,4 @@ namespace P2FixAnAppDotNetCode.Models
         public DateTime Date { get; set; }
     }
 }
+//
