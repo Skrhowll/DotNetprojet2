@@ -8,7 +8,9 @@ namespace P2FixAnAppDotNetCode.Resources.Models.ViewModels
     public static class Order
     {
         private static ResourceManager resourceManager = new ResourceManager("P2FixAnAppDotNetCode.Resources.Models.ViewModels.Order", Assembly.GetExecutingAssembly());
-        private static CultureInfo resourceCulture;
+        // Changement : la variable resourceCulture est initialisée avec la culture utilisateur courante (CultureInfo.CurrentUICulture).
+        // Cela permet de récupérer les ressources localisées selon la langue de l'utilisateur actif.
+        private static CultureInfo resourceCulture = CultureInfo.CurrentUICulture;
 
         public static string ErrorMissingName
         {

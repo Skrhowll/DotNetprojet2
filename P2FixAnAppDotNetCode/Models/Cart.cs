@@ -8,41 +8,45 @@ namespace P2FixAnAppDotNetCode.Models
     /// </summary>
     public class Cart : ICart
     {
-        /// <summary>
-        /// Read-only property for display only
-        /// </summary>
-        public IEnumerable<CartLine> Lines => GetCartLineList();
+        // Avant, la liste des lignes du panier était recréée à chaque appel via GetCartLineList(),
+        // ce qui empêchait de conserver les produits ajoutés et rendait le panier inutilisable.
+        // Maintenant, on utilise un champ privé _cartLines pour stocker l'état réel du panier.
+        // Cela permet de gérer correctement l'ajout, la suppression et la consultation des produits.
+        private readonly List<CartLine> _cartLines = new();
 
         /// <summary>
-        /// Return the actual cartline list
+        /// Propriété en lecture seule pour afficher les lignes du panier
         /// </summary>
-        /// <returns></returns>
-        private List<CartLine> GetCartLineList()
-        {
-            return new List<CartLine>();
-        }
+        public IEnumerable<CartLine> Lines => _cartLines;
 
         /// <summary>
-        /// Adds a product in the cart or increment its quantity in the cart if already added
-        /// </summary>//
+        /// Ajoute un produit au panier ou incrémente sa quantité s'il existe déjà
+        /// </summary>
         public void AddItem(Product product, int quantity)
         {
-            // TODO implement the method
+            var line = _cartLines.FirstOrDefault(l => l.Product.Id == product.Id);
+            if (line == null)
+            {
+                _cartLines.Add(new CartLine { Product = product, Quantity = quantity });
+            }
+            else
+            {
+                line.Quantity += quantity;
+            }
         }
 
         /// <summary>
-        /// Removes a product form the cart
+        /// Removes a product from the cart
         /// </summary>
         public void RemoveLine(Product product) =>
-            GetCartLineList().RemoveAll(l => l.Product.Id == product.Id);
+            _cartLines.RemoveAll(l => l.Product.Id == product.Id);
 
         /// <summary>
         /// Get total value of a cart
         /// </summary>
         public double GetTotalValue()
         {
-            // TODO implement the method
-            return 0.0;
+            return _cartLines.Sum(l => l.Product.Price * l.Quantity);
         }
 
         /// <summary>
@@ -50,8 +54,9 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public double GetAverageValue()
         {
-            // TODO implement the method
-            return 0.0;
+            int totalQuantity = _cartLines.Sum(l => l.Quantity);
+            if (totalQuantity == 0) return 0.0;
+            return GetTotalValue() / totalQuantity;
         }
 
         /// <summary>
@@ -59,8 +64,8 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public Product FindProductInCartLines(int productId)
         {
-            // TODO implement the method
-            return null;
+            var line = _cartLines.FirstOrDefault(l => l.Product.Id == productId);
+            return line?.Product;
         }
 
         /// <summary>
@@ -68,7 +73,7 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public CartLine GetCartLineByIndex(int index)
         {
-            return Lines.ToArray()[index];
+            return _cartLines[index];
         }
 
         /// <summary>
@@ -76,8 +81,7 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public void Clear()
         {
-            List<CartLine> cartLines = GetCartLineList();
-            cartLines.Clear();
+            _cartLines.Clear();
         }
     }
 
