@@ -2,6 +2,7 @@
 using System.Resources;
 using System.Reflection;
 using System.Globalization;
+using System.ComponentModel.DataAnnotations;
 
 namespace P2FixAnAppDotNetCode.Resources.Models.ViewModels
 {
@@ -40,6 +41,27 @@ namespace P2FixAnAppDotNetCode.Resources.Models.ViewModels
                 return resourceManager.GetString("ErrorMissingCountry", resourceCulture);
             }
         }
+    }
+
+    public class OrderViewModel
+    {
+        [Required(
+            ErrorMessageResourceType = typeof(P2FixAnAppDotNetCode.Resources.Models.ViewModels.Order),
+            ErrorMessageResourceName = "ErrorMissingAddress"
+        )]
+        public string Address { get; set; }
+
+        [Required(
+            ErrorMessageResourceType = typeof(P2FixAnAppDotNetCode.Resources.Models.ViewModels.Order),
+            ErrorMessageResourceName = "ErrorMissingCity"
+        )]
+        public string City { get; set; }
+
+        [Required(
+            ErrorMessageResourceType = typeof(P2FixAnAppDotNetCode.Resources.Models.ViewModels.Order),
+            ErrorMessageResourceName = "ErrorMissingCountry"
+        )]
+        public string Country { get; set; }
     }
 }
 
