@@ -12,8 +12,12 @@ namespace P2FixAnAppDotNetCode.Models.Repositories
 
         public ProductRepository()
         {
-            _products = new List<Product>();
-            GenerateProductData();
+            // On initialise la liste une seule fois pour toute l'application
+            if (_products == null)
+            {
+                _products = new List<Product>();
+                GenerateProductData();
+            }
         }
 
         /// <summary>
@@ -34,7 +38,8 @@ namespace P2FixAnAppDotNetCode.Models.Repositories
         /// </summary>
         public Product[] GetAllProducts()
         {
-            List<Product> list = _products.Where(p => p.Stock > 0).OrderBy(p => p.Name).ToList();
+            // On retire le filtre sur le stock
+            List<Product> list = _products.OrderBy(p => p.Name).ToList();
             return list.ToArray();
         }
 
@@ -46,8 +51,9 @@ namespace P2FixAnAppDotNetCode.Models.Repositories
             Product product = _products.First(p => p.Id == productId);
             product.Stock = product.Stock - quantityToRemove;
 
-            if (product.Stock == 0)
-                _products.Remove(product);
+            // Suppression désactivée pour que le produit reste même si stock == 0
+            // if (product.Stock == 0)
+            //     _products.Remove(product);
         }
     }
 }

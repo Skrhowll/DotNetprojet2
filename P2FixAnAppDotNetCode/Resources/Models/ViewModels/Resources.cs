@@ -46,6 +46,11 @@ namespace P2FixAnAppDotNetCode.Resources.Models.ViewModels
     public class OrderViewModel
     {
         [Required(
+           ErrorMessageResourceType = typeof(P2FixAnAppDotNetCode.Resources.Models.ViewModels.Order),
+           ErrorMessageResourceName = "ErrorMissingName"
+       )]
+        public string Name { get; set; }
+        [Required(
             ErrorMessageResourceType = typeof(P2FixAnAppDotNetCode.Resources.Models.ViewModels.Order),
             ErrorMessageResourceName = "ErrorMissingAddress"
         )]
