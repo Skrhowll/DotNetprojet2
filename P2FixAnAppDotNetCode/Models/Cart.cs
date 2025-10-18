@@ -7,11 +7,9 @@ namespace P2FixAnAppDotNetCode.Models
     /// The Cart class
     /// </summary>
     public class Cart : ICart
-    {
-        // Avant, la liste des lignes du panier était recréée à chaque appel via GetCartLineList(),
-        // ce qui empêchait de conserver les produits ajoutés et rendait le panier inutilisable.
-        // Maintenant, on utilise un champ privé _cartLines pour stocker l'état réel du panier.
-        // Cela permet de gérer correctement l'ajout, la suppression et la consultation des produits.
+    {   /// <summary>
+        /// Read-only property for display only
+        /// </summary>
         private readonly List<CartLine> _cartLines = new();
 
         /// <summary>
@@ -20,26 +18,20 @@ namespace P2FixAnAppDotNetCode.Models
         public IEnumerable<CartLine> Lines => _cartLines;
 
         /// <summary>
-        /// Ajoute un produit au panier ou incrémente sa quantité s'il existe déjà
-        /// </summary>
+        /// Adds a product in the cart or increment its quantity in the cart if already added
+        /// </summary>//
         public void AddItem(Product product, int quantity)
         {
-            // Recherche si le produit existe déjà dans le panier (même Id)
-            // Recherche la première ligne du panier (_cartLines) qui contient un produit
-            // ayant le même identifiant (Id) que le produit passé en paramètre.
-            // Si aucune ligne ne correspond, 'line' sera null.
+           //TODO(fait)
             var line = _cartLines.FirstOrDefault(l => l.Product.Id == product.Id);
 
             if (line == null)
             {
-                // Si le produit n'est pas encore dans le panier,
-                // on crée une nouvelle ligne avec ce produit et la quantité demandée
                 _cartLines.Add(new CartLine { Product = product, Quantity = quantity });
             }
             else
             {
-                // Si le produit existe déjà dans le panier,
-                // on augmente simplement la quantité de la ligne existante
+                
                 line.Quantity += quantity;
             }
         }
@@ -49,7 +41,6 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public void RemoveLine(Product product)
         {
-            // Supprime toutes les lignes du panier correspondant à l'identifiant du produit donné
             _cartLines.RemoveAll(l => l.Product.Id == product.Id);
         }
 
@@ -78,18 +69,21 @@ namespace P2FixAnAppDotNetCode.Models
         /// <returns>La valeur moyenne d'un article dans le panier.</returns>
         public double GetAverageValue()
         {
-            int totalQuantity = 0;
-            double totalValue = 0.0;
+            int totalQuantity = 0; 
+            double totalValue = 0.0; 
 
+            // Parcourt chaque ligne du panier
             foreach (var line in _cartLines)
             {
-                totalQuantity += line.Quantity;
-                totalValue += line.Product.Price * line.Quantity;
+                totalQuantity += line.Quantity; // Ajoute la quantité de chaque ligne au total
+                totalValue += line.Product.Price * line.Quantity; // Ajoute la valeur de chaque ligne au total
             }
 
+            // Si le panier est vide (aucun article), retourne 0 pour éviter une division par zéro
             if (totalQuantity == 0)
                 return 0.0;
 
+            // Calcule et retourne la valeur moyenne d'un article
             return totalValue / totalQuantity;
         }
 

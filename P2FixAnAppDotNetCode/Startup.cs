@@ -39,22 +39,19 @@ namespace P2FixAnAppDotNetCode
                     LanguageViewLocationExpanderFormat.Suffix,
                     opts => { opts.ResourcesPath = "Resources"; })
                 .AddDataAnnotationsLocalization();
+           
 
             services.Configure<RequestLocalizationOptions>(opts =>
-            { 
+            {
+                opts.DefaultRequestCulture = new RequestCulture("en-US");
                 var supportedCultures = new List<CultureInfo>
                 {
                     new CultureInfo("en-GB"),
-                    new CultureInfo("en-US"),
-                    new CultureInfo("en"),
                     new CultureInfo("fr-FR"),
-                    new CultureInfo("fr"),
-                    new CultureInfo("es"),
-                    new CultureInfo("es-ES"),
+                    new CultureInfo("en-US"),
+                    new CultureInfo("es-ES")
                 };
 
-                opts.DefaultRequestCulture = new RequestCulture("en");
-                // Formatting numbers, dates, etc.
                 opts.SupportedCultures = supportedCultures;
                 // UI strings that we have localized.
                 opts.SupportedUICultures = supportedCultures;

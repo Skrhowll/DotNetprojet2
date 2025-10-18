@@ -19,7 +19,7 @@ namespace P2FixAnAppDotNetCode.Tests
             string culture = languageService.SetCulture(language);
 
             // Assert
-            Assert.Same("fr", culture);
+            Assert.Same("fr-FR", culture);
         }
     }
 }

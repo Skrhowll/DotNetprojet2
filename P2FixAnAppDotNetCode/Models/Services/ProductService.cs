@@ -29,12 +29,15 @@ namespace P2FixAnAppDotNetCode.Models.Services
         }
 
         /// <summary>
-        /// Get a product form the inventory by its id
+        /// Récupère un produit de l'inventaire par son identifiant.
+        /// Cette méthode parcourt la liste de tous les produits retournée par le repository
+        /// et renvoie le premier produit dont l'Id correspond à celui passé en paramètre.
+        /// Si aucun produit n'est trouvé, elle retourne null.
         /// </summary>
         public Product GetProductById(int id)
         {
-            // TODO (fait) : implement the method
-            // Recherche optimisée d'un produit par son id
+            // Utilise LINQ pour rechercher le produit avec l'Id correspondant.
+            // FirstOrDefault retourne le premier produit trouvé ou null si aucun ne correspond.
             return _productRepository.GetAllProducts().FirstOrDefault(p => p.Id == id);
         }
 

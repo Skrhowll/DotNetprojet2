@@ -22,21 +22,21 @@ namespace P2FixAnAppDotNetCode.Models.Services
         /// </summary>
         public string SetCulture(string language)
         {
-            string culture = "en"; // Valeur par défaut
+            string culture = "en-US"; // Valeur par défaut
 
             if (!string.IsNullOrEmpty(language))
             {
                 switch (language.ToLowerInvariant())
                 {
                     case "french":
-                        culture = "fr";
+                        culture = "fr-FR";
                         break;
                     case "spanish":
-                        culture = "es";
+                        culture = "es-ES";
                         break;
                     case "english":
-                        culture = "en";
-                        break;                   
+                        culture = "en-US";
+                        break;
                 }
             }
             return culture;

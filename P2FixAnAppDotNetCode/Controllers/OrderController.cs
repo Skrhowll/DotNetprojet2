@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using P2FixAnAppDotNetCode.Models;
 using P2FixAnAppDotNetCode.Models.Services;
+using P2FixAnAppDotNetCode.Models.ViewModels;
 
 namespace P2FixAnAppDotNetCode.Controllers
 {

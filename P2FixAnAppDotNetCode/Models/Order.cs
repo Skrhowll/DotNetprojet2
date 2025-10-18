@@ -30,6 +30,10 @@ namespace P2FixAnAppDotNetCode.Models
         )]
         public string City { get; set; }
 
+          [Required(
+            ErrorMessageResourceType = typeof(P2FixAnAppDotNetCode.Resources.Models.ViewModels.Order),
+            ErrorMessageResourceName = "ErrorMissingZip"
+        )]
         public string Zip { get; set; }
 
         [Required(
