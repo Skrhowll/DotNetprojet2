@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace P2FixAnAppDotNetCode.Models
 {
@@ -16,23 +17,46 @@ namespace P2FixAnAppDotNetCode.Models
         /// Propriété en lecture seule pour afficher les lignes du panier
         /// </summary>
         public IEnumerable<CartLine> Lines => _cartLines;
-
+        
         /// <summary>
         /// Adds a product in the cart or increment its quantity in the cart if already added
-        /// </summary>//
+        /// </summary>
         public void AddItem(Product product, int quantity)
         {
-           //TODO(fait)
+            if (product == null || quantity <= 0)
+                return;
+
+            // Recherche d'une ligne existante pour ce produit (par son Id)
             var line = _cartLines.FirstOrDefault(l => l.Product.Id == product.Id);
 
+            int currentQty;
             if (line == null)
             {
-                _cartLines.Add(new CartLine { Product = product, Quantity = quantity });
+                currentQty = 0; 
             }
             else
             {
-                
-                line.Quantity += quantity;
+                currentQty = line.Quantity; 
+            }
+
+            // Quantité maximale encore ajoutable sans dépasser le stock
+            int allowedToAdd = product.Stock - currentQty;
+
+
+            // Si plus rien n'est ajoutable (stock déjà atteint ou dépassé), on ne fait rien
+            if (allowedToAdd <= 0)
+                return;
+
+            int toAdd = System.Math.Min(quantity, allowedToAdd);
+
+            // Ajout ou incrément de la ligne en respectant le plafond calculé
+            if (line == null)
+            {
+                _cartLines.Add(new CartLine { Product = product, Quantity = toAdd });
+            }
+            else
+            {
+                line.Quantity += toAdd;
             }
         }
 
